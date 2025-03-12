@@ -25,33 +25,65 @@ export const getSnippets = async (req: Request, res: Response) => {
       order = 'desc',
     } = req.query;
 
-    // Find snippets based on query parameters
-    const snippets = await Snippet.find({
-      ...(req.query.language && {
-        language: { $eq: req.query.language },
-      }),
-      ...(req.query.tags
-        ? {
-            tags: {
-              $all: (req.query.tags as string).split(','),
-            },
-          }
-        : {}),
-    }).sort({ [sort as string]: order === 'desc' ? -1 : 1 });
+    const query: any = {};
+    if (req.query.language) {
+      query.language = req.query.language;
+    }
+    if (req.query.tags) {
+      query.tags = { $all: (req.query.tags as string).split(',') };
+    }
 
-    // Paginate the snippets
-    const paginatedSnippets = snippets.slice(
-      (+page - 1) * +limit,
-      +page * +limit
-    );
+    const snippets = await Snippet.find(query)
+      .sort({ [sort as string]: order === 'desc' ? -1 : 1 })
+      .skip((+page - 1) * +limit)
+      .limit(+limit);
 
-    // Decode the code for each snippet
-    const decodedSnippets = paginatedSnippets.map((snippet) => {
+    const decodedSnippets = snippets.map((snippet) => {
       const decodedCode = Buffer.from(snippet.code, 'base64').toString('utf-8');
       return { ...snippet.toObject(), code: decodedCode };
     });
 
     res.status(200).json({ status: 'success', data: decodedSnippets });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'Something went wrong' });
+    }
+  }
+};
+
+export const getSnippetsByID = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { showExpired } = req.query;
+
+    const snippet = await Snippet.findById(id);
+    if (!snippet) {
+      return res.status(404).json({ message: 'Snippet not found' });
+    }
+
+    if (
+      !showExpired &&
+      snippet.expiresIn &&
+      Date.now() > new Date(snippet.expiresIn).getTime()
+    ) {
+      return res.status(404).json({ message: 'Snippet has expired' });
+    }
+
+    const decodedCode = Buffer.from(snippet.code, 'base64').toString('utf-8');
+    const history = await Snippet.find({ originalId: id }).sort({
+      updatedAt: -1,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        ...snippet.toObject(),
+        code: decodedCode,
+        history,
+      },
+    });
   } catch (error: unknown) {
     if (error instanceof Error) {
       res.status(500).json({ message: error.message });
