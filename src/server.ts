@@ -19,8 +19,13 @@ app.set('view engine', 'ejs');
 app.set('views', 'src/views');
 app.use(express.static('src/public'));
 
+// Redirect root to /table
+app.get('/', (req, res) => {
+  res.redirect('/table');
+});
+
 // EJS
-app.get('/', async (req, res) => {
+app.get('/table', async (req, res) => {
   const snippets = await Snippet.find();
   res.render('index', {
     title: 'Snippet Manager',

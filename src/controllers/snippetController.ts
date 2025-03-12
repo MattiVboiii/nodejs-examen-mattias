@@ -5,7 +5,11 @@ export const createSnippet = async (req: Request, res: Response) => {
   try {
     const { code, ...rest } = req.body;
     const encodedCode = Buffer.from(code).toString('base64');
-    const snippet = await Snippet.create({ ...rest, code: encodedCode });
+    const snippet = await Snippet.create({
+      ...rest,
+      code: encodedCode,
+      expiresIn: rest.expiresIn || '1d',
+    });
     res.status(201).json({ status: 'success', data: snippet });
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -98,7 +102,11 @@ export const updateSnippet = async (req: Request, res: Response) => {
       rest.code = Buffer.from(code).toString('base64');
     }
 
-    const snippet = await Snippet.findByIdAndUpdate(id, rest, { new: true });
+    const snippet = await Snippet.findByIdAndUpdate(
+      id,
+      { ...rest, expiresIn: rest.expiresIn || '1d' },
+      { new: true }
+    );
     if (!snippet) {
       return res.status(404).json({ message: 'Snippet not found' });
     }
