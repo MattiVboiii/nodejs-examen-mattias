@@ -72,17 +72,41 @@ export const getSnippetsByID = async (req: Request, res: Response) => {
     }
 
     const decodedCode = Buffer.from(snippet.code, 'base64').toString('utf-8');
-    const history = await Snippet.find({ originalId: id }).sort({
-      updatedAt: -1,
-    });
 
     res.status(200).json({
       status: 'success',
       data: {
         ...snippet.toObject(),
         code: decodedCode,
-        history,
       },
+    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'Something went wrong' });
+    }
+  }
+};
+
+export const updateSnippet = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { code, ...rest } = req.body;
+
+    if (code) {
+      rest.code = Buffer.from(code).toString('base64');
+    }
+
+    const snippet = await Snippet.findByIdAndUpdate(id, rest, { new: true });
+    if (!snippet) {
+      return res.status(404).json({ message: 'Snippet not found' });
+    }
+
+    const decodedCode = Buffer.from(snippet.code, 'base64').toString('utf-8');
+    res.status(200).json({
+      status: 'success',
+      data: { ...snippet.toObject(), code: decodedCode },
     });
   } catch (error: unknown) {
     if (error instanceof Error) {
