@@ -1,4 +1,4 @@
-const snippetData = [
+export const snippetData = [
   {
     title: 'Async Function Example',
     code: 'async function fetchData() { return await fetch(url); }',
