@@ -4,6 +4,7 @@ import {
   getSnippets,
   getSnippetsByID,
   updateSnippet,
+  deleteSnippet,
 } from '../controllers/snippetController';
 
 const router = express.Router();
@@ -12,6 +13,7 @@ router
   .post('/', createSnippet)
   .get('/', getSnippets)
   .get('/:id', getSnippetsByID)
-  .put('/:id', updateSnippet);
+  .put('/:id', updateSnippet)
+  .delete('/:id', deleteSnippet);
 
 export default router;

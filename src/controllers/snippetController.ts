@@ -116,3 +116,22 @@ export const updateSnippet = async (req: Request, res: Response) => {
     }
   }
 };
+
+export const deleteSnippet = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const snippet = await Snippet.findByIdAndDelete(id);
+    if (!snippet) {
+      return res.status(404).json({ message: 'Snippet not found' });
+    }
+
+    res.status(200).json({ status: 'success', data: snippet });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'Something went wrong' });
+    }
+  }
+};
