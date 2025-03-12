@@ -1,71 +1,54 @@
-# Node, Express and TypeScript Project Template
+# Node.js Examen Mattias
 
-Welcome to the **Node, Express and TypeScript Project Template**! This repository serves as a starter template for building Node.js applications with TypeScript. It comes pre-configured with models, controllers, routes, and bundling, so you can focus on building your application.
+A Node.js project for managing code snippets.
 
-## Features
+## Table of Contents
 
-- **TypeScript**: Strongly typed language for writing robust and maintainable code.
-- **Project Structure**: Organized folder structure with models, controllers, and routes.
-- **Bundling pkgroll**: Pre-configured with a bundler for efficient builds.
-- **TSX**: For automatic server restarts an running typescript during development.
-- **Dependency Management**: Configured with npm.
-
-## Project Structure
-
-```
-├── src
-│   ├── controllers
-│   │   └── exampleController.ts
-│   ├── middleware
-│   │   └── exampleMiddleware.ts
-│   ├── models
-│   │   └── exampleModel.ts
-│   ├── routes
-│   │   └── exampleRoutes.ts
-│   └── server.ts    // Main entry point of the application
-├── dist             // Compiled output (auto-generated)
-├── package.json     // Project dependencies and scripts
-├──.gitignore        // Ignore files to github
-├── tsconfig.json    // TypeScript configuration
-└── README.md        // Project documentation
-```
+- [Getting Started](#getting-started)
+- [Installation](#installation)
+- [Project Structure](#project-structure)
+- [Features](#features)
+- [Endpoints](#endpoints)
 
 ## Getting Started
 
-### 1. Start Development Server
+### Installation
 
-Run the development server with hot-reloading:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/MattiVboiii/nodejs-examen-mattias.git
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-```bash
-npm run dev
-```
+## Project Structure
 
-### 2. Build the Project
+- **src**: Source code directory
+  - **controllers**: Controller functions for handling API requests
+  - **models**: Mongoose models for interacting with the database
+  - **routes**: API routes for handling requests
+  - **utils**: Utility functions for various tasks
+- **public**: Public directory for serving static files
+  - **css**: CSS stylesheets
+  - **js**: JavaScript scripts
 
-Compile TypeScript files to JavaScript:
+## Features
 
-```bash
-npm run build
-```
+### Code snippet management:
 
-### 3. Start the Production Server
+- **Table of snippets**: Get a list of the snippets in the database
+- **Filter snippets**: By language, tags, and expiration date
 
-After building the project, start the server:
+### Endpoints
 
-```bash
-npm start
-```
-
-## Scripts
-
-- `dev`: Starts the development server with hot-reloading.
-- `build`: Compiles the TypeScript source code to JavaScript.
-- `start`: Starts the production server.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-Happy coding! 🎉
+- `GET /snippets`: Retrieve a list of all code snippets
+- `POST /snippets`: Create a new code snippet
+- `GET /snippets/:id`: Retrieve a single code snippet by ID
+- `PUT /snippets/:id`: Update a single code snippet by ID
+- `DELETE /snippets/:id`: Delete a single code snippet by ID
