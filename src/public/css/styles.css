@@ -1,0 +1,75 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+h1 {
+  color: #4caf50;
+  margin-bottom: 20px;
+}
+
+#snippetTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#snippetTable th,
+#snippetTable td {
+  border: 1px solid #ffffff;
+  padding: 8px;
+}
+
+#snippetTable tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+#snippetTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4caf50;
+  color: white;
+}
+
+#filter {
+  margin: 10px 0;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#filter:hover {
+  background-color: #45a049;
+}
+
+#language,
+#tags {
+  margin: 10px 0;
+}
+
+fieldset {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+legend {
+  padding: 0 10px;
+  font-weight: bold;
+}
+
+label {
+  margin-right: 10px;
+}
+
+input[type='checkbox'] {
+  margin-right: 5px;
+}

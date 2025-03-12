@@ -1,0 +1,48 @@
+<link rel="stylesheet" href="/css/styles.css" />
+<script src="/js/main.js" defer></script>
+<div class="container">
+  <h1>Snippet Manager</h1>
+  <label for="language">Language: </label>
+  <select id="language" name="language">
+    <option value="">All</option>
+    <% const languages = snippets.map(snippet => snippet.language).filter((lang,
+    i, arr) => arr.indexOf(lang) === i); %> <% languages.forEach((lang) => { %>
+    <option value="<%- lang %>"><%- lang %></option>
+    <% }); %>
+  </select>
+  <fieldset id="tags">
+    <legend>Tags:</legend>
+    <% const tagsSet = new Set(); snippets.forEach((snippet) => {
+    snippet.tags.forEach((tag) => { tagsSet.add(tag); }); }); const tags =
+    Array.from(tagsSet); %> <% tags.forEach((tag, i) => { %>
+    <input type="checkbox" id="tag<%- i %>" name="tags" value="<%- tag %>" />
+    <label for="tag<%- i %>"><%- tag %></label>
+    <% }); %>
+  </fieldset>
+  <button id="filter">Filter</button>
+  <table id="snippetTable">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Code Snippet</th>
+        <th>Language</th>
+        <th>Tags</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% snippets.forEach((snippet) => { %>
+      <tr
+        data-language="<%- snippet.language %>"
+        data-tags="<%- snippet.tags.join(' ') %>"
+      >
+        <td><%- snippet.title %></td>
+        <td>
+          <pre><code><%- Buffer.from(snippet.code, 'base64').toString('utf-8') %></code></pre>
+        </td>
+        <td><%- snippet.language %></td>
+        <td><%- snippet.tags.join(', ') %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>

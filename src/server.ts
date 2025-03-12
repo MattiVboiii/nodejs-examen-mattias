@@ -3,9 +3,9 @@ import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import { notFound } from './controllers/notFoundController';
-import { helloMiddleware } from './middleware/exampleMiddleware';
 import mongoose from 'mongoose';
 import snippetsRoutes from './routes/snippetsRoutes';
+import { Snippet } from './models/snippetModel';
 
 // Variables
 const app = express();
@@ -14,6 +14,19 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+app.set('views', 'src/views');
+app.use(express.static('src/public'));
+
+// EJS
+app.get('/', async (req, res) => {
+  const snippets = await Snippet.find();
+  res.render('index', {
+    title: 'Snippet Manager',
+    snippets,
+  });
+});
 
 // Routes
 app.use('/api/snippets', snippetsRoutes);

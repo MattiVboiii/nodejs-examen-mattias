@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "npx tsx watch ./src/server.ts",
     "build": "pkgroll --clean-dist --minify",
-    "start": "node dist/server.mjs"
+    "start": "node dist/server.mjs",
+    "seed": "tsx ./src/utils/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -15,9 +16,11 @@
   "description": "",
   "dependencies": {
     "@types/cors": "^2.8.17",
+    "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
     "express": "^4.21.2",
     "mongoose": "^8.9.5"
   },
